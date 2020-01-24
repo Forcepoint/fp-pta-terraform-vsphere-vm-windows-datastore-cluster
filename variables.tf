@@ -33,7 +33,7 @@ variable "num_cpus" {
   description = "The total number of virtual processor cores to assign to this virtual machine."
 }
 variable "memory" {
-  type = string
+  type = number
   default = 4096
   description = "The size of the virtual machine's memory, in MB."
 }
