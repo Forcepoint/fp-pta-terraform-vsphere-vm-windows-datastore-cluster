@@ -85,6 +85,7 @@ variable "ipv6_netmask" {
 }
 variable "ipv6_gateway" {
   type = string
+  default = null
   description = "The IPv6 Gateway to communicate with to get the DHCP address for the VM's network."
 }
 variable "win_product_key" {
