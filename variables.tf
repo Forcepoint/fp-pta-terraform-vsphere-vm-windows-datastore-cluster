@@ -38,8 +38,9 @@ variable "memory" {
   description = "The size of the virtual machine's memory, in MB."
 }
 variable "time_zone" {
-  type = string
-  description = "The timezone to set in the OS. EX: MST7MDT"
+  type = number
+  default = null
+  description = "The timezone to set in the OS. EX: 15"
 }
 variable "vlan_main" {
   type = string
@@ -48,11 +49,6 @@ variable "vlan_main" {
 variable "domain" {
   type = string
   description = "The domain name for this machine. This, along with host_name, make up the FQDN of this virtual machine. EX: COMPANY.com"
-}
-variable "dns_suffix_list" {
-  type = list(string)
-  default = null
-  description = "A list of DNS search domains to add to the DNS configuration on the virtual machine. If the VM has Windows, use win_dns_domain instead. EX: [\"COMPANY.com\"]"
 }
 variable "dns_server_list" {
   type = list(string)
@@ -65,7 +61,7 @@ variable "ipv4_address" {
   description = "The IPv4 address assigned to this network adapter. If left blank or not included, DHCP is used."
 }
 variable "ipv4_netmask" {
-  type = string
+  type = number
   default = null
   description = "The IPv4 subnet mask, in bits (example: 24 for 255.255.255.0)."
 }
@@ -79,7 +75,7 @@ variable "ipv6_address" {
   description = "The IPv6 address assigned to this network adapter. If left blank or not included, auto-configuration is used."
 }
 variable "ipv6_netmask" {
-  type = string
+  type = number
   default = null
   description = "The IPv6 subnet mask, in bits (example: 32)."
 }
@@ -88,45 +84,57 @@ variable "ipv6_gateway" {
   default = null
   description = "The IPv6 Gateway to communicate with to get the DHCP address for the VM's network."
 }
-variable "win_product_key" {
+variable "product_key" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] The product key for this virtual machine."
+  description = "The product key for this virtual machine."
 }
-variable "win_full_name" {
+variable "full_name" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] The full name of the user of this virtual machine. This populates the 'user' field in the general Windows system information. Default: Administrator."
+  description = "The full name of the user of this virtual machine. This populates the 'user' field in the general Windows system information. Default: Administrator."
 }
-variable "win_admin_password" {
+variable "admin_password" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] The administrator password for this virtual machine."
+  description = "The administrator password for this virtual machine."
 }
-variable "win_dns_domain" {
+variable "dns_domain" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] Network interface-specific DNS search domain for Windows operating systems."
+  description = "Network interface-specific DNS search domain for Windows operating systems."
 }
-variable "win_workgroup" {
+variable "workgroup" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] The workgroup name for this virtual machine. One of this or win_join_domain must be included. If used, this is generally set to 'WORKGROUP'."
+  description = "The workgroup name for this virtual machine. One of this or join_domain must be included. If used, this is generally set to 'WORKGROUP'."
 }
-variable "win_join_domain" {
+variable "join_domain" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] The domain to join for this virtual machine. One of this or win_workgroup must be included."
+  description = "The domain to join for this virtual machine. One of this or workgroup must be included."
 }
-variable "win_domain_admin_user" {
+variable "domain_admin_user" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] The user of the domain administrator used to join this virtual machine to the domain. Required if you are setting win_join_domain."
+  description = "The user of the domain administrator used to join this virtual machine to the domain. Required if you are setting join_domain."
 }
-variable "win_domain_admin_password" {
+variable "domain_admin_password" {
   type = string
   default = null
-  description = "[WINDOWS ONLY] The password of the domain administrator used to join this virtual machine to the domain. Required if you are setting win_join_domain."
+  description = "The password of the domain administrator used to join this virtual machine to the domain. Required if you are setting join_domain."
+}
+variable "auto_logon" {
+  type = bool
+  default = true
+  description = "Specifies whether or not the VM automatically logs on as Administrator."
+}
+variable "run_once_command_list" {
+  type = list(string)
+  default = ["net user Administrator /active:yes"]
+  description = "A list of commands to run at first user logon, after guest customization. Each command is limited by the API to 260 characters."
+  // Be sure you use this variable with the right value if you change the win_full_name variable.
+  // https://github.com/terraform-providers/terraform-provider-vsphere/issues/118
 }
 variable "nested_hv_enabled" {
   type = bool

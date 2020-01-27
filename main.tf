@@ -54,25 +54,18 @@ resource "vsphere_virtual_machine" "vm" {
     timeout       = var.clone_timeout
 
     customize {
-      linux_options {
-        host_name = var.name
-        domain    = var.domain
-        time_zone = var.time_zone
-      }
-
       windows_options {
         computer_name         = var.name
-        workgroup             = var.win_workgroup
-        join_domain           = var.win_join_domain
-        domain_admin_user     = var.win_domain_admin_user
-        domain_admin_password = var.win_domain_admin_password
-        product_key           = var.win_product_key
+        workgroup             = var.workgroup
+        join_domain           = var.join_domain
+        domain_admin_user     = var.domain_admin_user
+        domain_admin_password = var.domain_admin_password
+        product_key           = var.product_key
         time_zone             = var.time_zone
-        full_name             = var.win_full_name
-        admin_password        = var.win_admin_password
-        auto_logon            = true
-        run_once_command_list = ["net user ${var.win_full_name} /active:yes"]
-        # https://github.com/terraform-providers/terraform-provider-vsphere/issues/118
+        full_name             = var.full_name
+        admin_password        = var.admin_password
+        auto_logon            = var.auto_logon
+        run_once_command_list = var.run_once_command_list
       }
 
       network_interface {
@@ -80,14 +73,12 @@ resource "vsphere_virtual_machine" "vm" {
         ipv4_netmask    = var.ipv4_netmask
         ipv6_address    = var.ipv6_address
         ipv6_netmask    = var.ipv6_netmask
-        dns_domain      = var.win_dns_domain
+        dns_domain      = var.dns_domain
         dns_server_list = var.dns_server_list
       }
 
       ipv4_gateway    = var.ipv4_gateway
       ipv6_gateway    = var.ipv6_gateway
-      dns_suffix_list = var.dns_suffix_list
-      dns_server_list = var.dns_server_list
 
       timeout         = var.customize_timeout
     }
