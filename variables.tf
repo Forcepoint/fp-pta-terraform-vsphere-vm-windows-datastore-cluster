@@ -46,10 +46,6 @@ variable "vlan_main" {
   type = string
   description = "The name of the vSphere network to attach as a Network Adapter to the VM."
 }
-variable "domain" {
-  type = string
-  description = "The domain name for this machine. This, along with host_name, make up the FQDN of this virtual machine. EX: COMPANY.com"
-}
 variable "dns_server_list" {
   type = list(string)
   default = null
