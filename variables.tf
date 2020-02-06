@@ -127,7 +127,7 @@ variable "auto_logon" {
 }
 variable "run_once_command_list" {
   type = list(string)
-  default = ["net user Administrator /active:yes"]
+  default = ["net user Administrator /active:yes", "rundll32.exe user32.dll, LockWorkStation"]
   description = "A list of commands to run at first user logon, after guest customization. Each command is limited by the API to 260 characters."
   // Be sure you use this variable with the right value if you change the win_full_name variable.
   // https://github.com/terraform-providers/terraform-provider-vsphere/issues/118
